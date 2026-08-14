@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Omar Mohsen — EU Relocation Job Tracker</title>
+<style>
+:root{
+  --bg:#0f1115; --panel:#171a21; --panel2:#1d212a; --line:#2a2f3a;
+  --tx:#e6e9ef; --tx2:#9aa3b2; --tx3:#6b7484;
+  --acc:#5b8def; --ok:#3fb984; --warn:#e0a340; --bad:#e05c5c; --purple:#a56bd6;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif}
+a{color:var(--acc);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 80px}
+header{border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:24px}
+h1{margin:0 0 6px;font-size:26px;letter-spacing:-.4px}
+.sub{color:var(--tx2);font-size:14px}
+.sub b{color:var(--tx)}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:96px}
+.stat .n{font-size:22px;font-weight:600;line-height:1.1}
+.stat .l{font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px;margin-top:3px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:22px 0 16px;position:sticky;top:0;background:var(--bg);padding:12px 0;z-index:20;border-bottom:1px solid var(--line)}
+.chip{background:var(--panel);border:1px solid var(--line);color:var(--tx2);padding:6px 13px;border-radius:20px;cursor:pointer;font-size:13px;user-select:none;transition:.12s}
+.chip:hover{border-color:#3d4453;color:var(--tx)}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:500}
+.chip.on.g{background:var(--ok);border-color:var(--ok)}
+.sep{width:1px;height:22px;background:var(--line);margin:0 4px}
+input[type=search]{background:var(--panel);border:1px solid var(--line);color:var(--tx);padding:7px 12px;border-radius:8px;font-size:13px;width:190px;outline:none}
+input[type=search]:focus{border-color:var(--acc)}
+.job{background:var(--panel);border:1px solid var(--line);border-left-width:3px;border-radius:10px;padding:14px 16px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start}
+.job.tA{border-left-color:var(--ok)}
+.job.tB{border-left-color:var(--acc)}
+.job.tC{border-left-color:var(--tx3)}
+.job.tX{border-left-color:var(--bad);opacity:.55}
+.job.done{opacity:.42}
+.job.done .rt{text-decoration:line-through}
+.cb{appearance:none;width:19px;height:19px;min-width:19px;border:1.5px solid #3d4453;border-radius:5px;cursor:pointer;margin-top:3px;position:relative;background:transparent}
+.cb:checked{background:var(--ok);border-color:var(--ok)}
+.cb:checked::after{content:"✓";position:absolute;top:-2px;left:3px;color:#0f1115;font-size:14px;font-weight:700}
+.jb{flex:1;min-width:0}
+.jh{display:flex;gap:9px;align-items:baseline;flex-wrap:wrap}
+.co{font-weight:650;font-size:15px}
+.rt{color:var(--tx);font-size:14.5px}
+.meta{color:var(--tx3);font-size:12.5px;margin-top:3px}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 7px}
+.b{font-size:10.5px;padding:2.5px 8px;border-radius:5px;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+.b.tier{background:#2a3f33;color:var(--ok)}
+.b.tierB{background:#26334d;color:#8ab0f5}
+.b.tierC{background:#2a2f3a;color:var(--tx2)}
+.b.tierX{background:#3d2626;color:#f08a8a}
+.b.ex{background:#2a3f33;color:var(--ok)}
+.b.lk{background:#3d3520;color:var(--warn)}
+.b.un{background:#2a2f3a;color:var(--tx2)}
+.b.no{background:#3d2626;color:#f08a8a}
+.b.m{background:#33264d;color:#c39ae8}
+.ve{font-size:13px;color:var(--tx2);background:var(--panel2);border-radius:7px;padding:8px 11px;margin-bottom:7px}
+.ve em{color:var(--ok);font-style:normal}
+.req{font-size:12.8px;color:var(--tx3);line-height:1.5}
+.req b{color:var(--tx2)}
+.apply{background:var(--acc);color:#fff!important;padding:7px 15px;border-radius:8px;font-size:13px;font-weight:600;white-space:nowrap;align-self:center}
+.apply:hover{background:#4a7ce0;text-decoration:none!important}
+.apply.x{background:var(--panel2);color:var(--tx3)!important;pointer-events:none}
+h2{font-size:18px;margin:36px 0 4px;letter-spacing:-.2px}
+h2 .cnt{color:var(--tx3);font-weight:400;font-size:14px}
+.h2s{color:var(--tx2);font-size:13.5px;margin:0 0 16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:9px}
+.card .t{font-weight:620;margin-bottom:4px}
+.card .n2{font-size:13px;color:var(--tx2)}
+.card .n2 em{color:var(--ok);font-style:normal}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0 4px}
+th{text-align:left;color:var(--tx3);font-size:11px;text-transform:uppercase;letter-spacing:.6px;padding:8px 10px;border-bottom:1px solid var(--line);font-weight:600}
+td{padding:9px 10px;border-bottom:1px solid #21252e;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.flag{display:inline-block;width:26px;font-size:14px}
+.note{background:#1a2130;border:1px solid #26334d;border-left:3px solid var(--acc);border-radius:8px;padding:12px 15px;margin:14px 0;font-size:13.5px;color:var(--tx2)}
+.note b{color:var(--tx)}
+.warnbox{background:#2a2318;border-color:#4a3a1c;border-left-color:var(--warn)}
+ul.dead{columns:2;font-size:13px;color:var(--tx3);padding-left:18px;margin:8px 0}
+ul.dead li{margin-bottom:5px;break-inside:avoid}
+footer{margin-top:50px;padding-top:18px;border-top:1px solid var(--line);color:var(--tx3);font-size:12.5px}
+@media(max-width:720px){.job{flex-wrap:wrap}.apply{width:100%;text-align:center}ul.dead{columns:1}.controls{position:static}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+<h1>EU Relocation Job Tracker</h1>
+<div class="sub">Omar Mohsen · Java/Spring Boot backend + full-stack · 6 yrs · Cairo → <b>Netherlands · Germany · Spain · Denmark</b><br>
+Applications sent from <b>contact@omarmohsen.dev</b> · researched 10 Aug 2026</div>
+<div class="stats">
+  <div class="stat"><div class="n" id="sTotal">0</div><div class="l">Live leads</div></div>
+  <div class="stat"><div class="n" style="color:var(--ok)" id="sA">0</div><div class="l">Apply first</div></div>
+  <div class="stat"><div class="n" style="color:var(--ok)" id="sEx">0</div><div class="l">Explicit visa</div></div>
+  <div class="stat"><div class="n" style="color:var(--acc)" id="sDone">0</div><div class="l">Applied</div></div>
+  <div class="stat"><div class="n" style="color:var(--bad)" id="sX">0</div><div class="l">Ruled out</div></div>
+</div>
+</header>
+
+<div class="note">
+<b>Read this first.</b> Only a minority of EU postings say "we sponsor visas" in writing — silence is genuinely ambiguous, not a soft no. Two companies proved this by saying no <em>explicitly</em> (C Teleport, Candeno), which means the rest that stay quiet haven't decided against you. So: <b>ask about sponsorship in your first message, not your last.</b> The "Visa evidence" line on each card tells you whether the sponsorship claim is a direct quote from the posting or an inference — treat those differently.
+</div>
+
+<h2 style="margin-top:26px">Your apply queue — this week</h2>
+<p class="h2s">Ordered by probability, not by country. Each one takes about five minutes because the letter is already written. Do them in this order and stop when you run out of evening.</p>
+<table>
+<tr><th style="width:26px"></th><th>Role</th><th>Route</th><th>Letter to use</th><th>Watch out for</th></tr>
+<tr><td><b>1</b></td><td>🇪🇸 <b>Talan</b> — Backend Java/Spring Boot (Camunda 8), Málaga</td><td>SmartRecruiters form</td><td>Letter #1 (written for this role)</td><td>Ask what the salary is before investing — it must clear <b>€41,356</b> for the HQP permit, and Málaga rates sometimes don't.</td></tr>
+<tr><td><b>2</b></td><td>🇩🇪 <b>N26</b> — Backend Engineer, Customer Identity, Berlin</td><td>Greenhouse form on n26.com</td><td>Letter #2 (written for this role)</td><td>There's a required dropdown: <em>"Will you now or in the future require N26 to commence an immigration case?"</em> Answer <b>yes</b> — the posting already promises visa support, so it's not a trap.</td></tr>
+<tr><td><b>3</b></td><td>🇳🇱 <b>Picnic</b> — Senior SWE (Logistics, Warehouse Systems, Store), Amsterdam</td><td>Own ATS — 3 separate reqs</td><td>Letter #3, swap the team name</td><td>Apply to all three. They're different teams with separate reqs and it isn't held against you.</td></tr>
+<tr><td><b>4</b></td><td>🇩🇰 <b>Monta</b> — Mid Level Backend Engineer, Financial Services, Copenhagen</td><td>The Hub</td><td>Letter #4 (written for this role)</td><td>Says <b>mid-level</b> — rare in Denmark, where nearly everything is senior/staff. The Positive List paragraph is the part that does the work here.</td></tr>
+<tr><td><b>5</b></td><td>🇩🇪 <b>Zalando</b> — Backend Engineer, ZEOS, Berlin</td><td>Own ATS</td><td>Letter #5 (written for this role)</td><td>Screening question asks directly whether you hold an EU work permit. Say no, then immediately say Blue Card. Don't leave it blank.</td></tr>
+<tr><td><b>6</b></td><td>🇩🇪 <b>Flix</b> — Senior SWE (Kotlin, Java), Berlin <em>and</em> Munich</td><td>Arbeitnow → their ATS</td><td>Master template + transportation hook</td><td>Asks for <b>5–7 years</b> — your exact band, which is unusual on this list. Lead with Flairstech's mass-transit backend.</td></tr>
+<tr><td><b>7</b></td><td>🇩🇪 <b>SAP Fioneer</b> — Senior Backend Engineer (remote Germany)</td><td>Arbeitnow → their ATS</td><td>Master template + fintech hook</td><td>Banking software, Java/Kotlin/Spring Boot/Kafka. Remote-Germany still needs a residence permit — confirm early.</td></tr>
+<tr><td><b>8</b></td><td>🇩🇪 <b>Raisin</b> — Senior SWE, US Payments &amp; Partner Ops, Berlin</td><td>Arbeitnow → Greenhouse</td><td>Master template + fintech hook</td><td>Their stack list hits .NET, SQL Server, React, Java/Spring, MongoDB <em>and</em> OAuth simultaneously. Name all of them.</td></tr>
+<tr><td><b>9</b></td><td>🇳🇱 <b>Adyen</b> — Java SWE / Senior Java Engineer, Amsterdam</td><td>Own ATS</td><td>Master template + fintech hook</td><td>Check Adyen on the IND register first. Office-first — say plainly that you're relocating, not asking for remote.</td></tr>
+<tr><td><b>10</b></td><td>🇩🇪 <b>Doctolib</b> — Senior Backend Engineer (Java/Kotlin), Berlin</td><td>Own ATS</td><td>Master template</td><td>No visa language in the posting — ask the screening question in your first reply.</td></tr>
+</table>
+<div class="note" style="margin-top:16px"><b>Then, in parallel:</b> email the five <b>SIRI Fast-track certified</b> Danish consultancies — Accenture, Capgemini, CGI, Cognizant, IBM Danmark. They're volume Java/Spring shops with standing sponsorship certification, which means a one-month permit route. Use the short LinkedIn/cold-email message with the Denmark visa sentence. Speculative applications to certified employers are a much better use of an hour than a tenth application to a job board.</div>
+
+<div class="controls">
+  <span class="chip on" data-f="ctry" data-v="all">All countries</span>
+  <span class="chip" data-f="ctry" data-v="NL">🇳🇱 Netherlands</span>
+  <span class="chip" data-f="ctry" data-v="DE">🇩🇪 Germany</span>
+  <span class="chip" data-f="ctry" data-v="ES">🇪🇸 Spain</span>
+  <span class="chip" data-f="ctry" data-v="DK">🇩🇰 Denmark</span>
+  <span class="sep"></span>
+  <span class="chip on g" data-f="tier" data-v="live">Live only</span>
+  <span class="chip" data-f="tier" data-v="A">Apply first</span>
+  <span class="chip" data-f="tier" data-v="exp">Explicit visa only</span>
+  <span class="chip" data-f="tier" data-v="all">Show ruled out</span>
+  <span class="sep"></span>
+  <input type="search" id="q" placeholder="Search company / stack…">
+  <span class="chip" id="hideDone">Hide applied</span>
+</div>
+
+<div id="list"></div>
+
+<h2>Watchlist <span class="cnt">— no matching role open today, but worth checking weekly</span></h2>
+<p class="h2s">These are strong employers where I confirmed the careers page but couldn't confirm a live matching req. Several are near-certain sponsors.</p>
+<div id="watch"></div>
+
+<h2>Where to keep looking</h2>
+<p class="h2s">Boards and registers that actually work in 2026, with pre-filtered links. The two registers at the top are legal gates, not job boards — check them before you spend time on any application.</p>
+<div id="boards"></div>
+
+<h2>Visa routes — the numbers that matter</h2>
+
+<div class="note">
+<b>🇳🇱 Netherlands — Highly Skilled Migrant (kennismigrant).</b> Threshold for <b>under 30: €4,357/month gross</b> (excl. 8% holiday allowance) ≈ €52.3k/yr. Age 30+: €5,942/month. Comfortably below Amsterdam market rate for your level, so the salary bar is <em>not</em> your obstacle — the obstacle is that only an <b>IND recognised sponsor</b> may legally file for you. Check every NL employer against the register before applying. The <b>30% ruling</b> holds at 30% through 2026 and drops to <b>27% for new rulings from 1 Jan 2027</b> — landing a ruling this year is worth real money over five years. The government also announced a tightening of the whole scheme in July 2025 (not yet in force). <b>Direction of travel is against you: move now.</b>
+</div>
+
+<div class="note">
+<b>🇩🇪 Germany — EU Blue Card.</b> €50,700/yr standard, but <b>software developers (ISCO 2512) are a shortage occupation → €45,934.20/yr applies to you</b>. Every Berlin/Munich role on this list should clear that comfortably. Two important details: (1) if you hold a degree, <b>verify it in anabin before applying</b> — an unrecognised degree is a common silent rejection; (2) there is a <b>no-degree IT route</b> — €45,934.20 + 3 years relevant IT experience in the last 7 years — so you qualify on the experience track regardless. Processing is 8–12 weeks normally, but the <b>Accelerated Skilled Worker Procedure runs 4–6 weeks and is employer-initiated</b>. Ask any German employer to use it. Fallback if no offer: the <b>Opportunity Card</b> (Chancenkarte) gives you 12 months in-country to job-hunt; with a recognised BSc you qualify without the points test, need ~€13,092 in proof of funds, and may work 20 hrs/week.
+</div>
+
+<div class="note">
+<b>🇩🇰 Denmark — use the Positive List, not the Pay Limit Scheme.</b> The Pay Limit bar is <b>DKK 552,000/yr (~€73,800)</b> — the highest of the four countries, and probably out of reach at your level. But <b>"Software Backend Developer" and "Programmer and System Developer" are both on the Positive List for People with a Higher Education</b>, which has <b>no fixed salary floor</b> — only "customary Danish standards". Your BSc qualifies you. Most Danish hiring managers don't realise their own posting maps onto this route, so <b>name it explicitly in your first email</b>. Separately, ask whether the employer is <b>SIRI Fast-track certified</b> (1-month processing) — it's a great early screening question and the certified list is public. Fee DKK 6,810. Lists refresh 1 Jan / 1 Jul; the higher-education list <em>shrank</em> in July 2026, so re-check before each wave.
+</div>
+
+<div class="note warnbox">
+<b>🇪🇸 Spain — easiest legally, hardest to discover.</b> The Highly Qualified Professional route (Ley de Startups) is processed by UGE-CE in ~20 business days with <b>no labour market test</b> — the employer never has to prove no Spaniard could do the job. That makes it the cheapest and fastest of the four. <b>But the salary floor is €41,356.36/yr and it is the binding constraint</b>: mid-level Java salaries in Málaga or Valencia often sit below it. Barcelona and Madrid clear it more reliably. The under-30 reduction coefficient was abolished. Also: most Spanish employers don't know this route is cheap and fast — <b>it is worth telling them in your cover letter.</b> Trade-off: Spanish salaries run 35–45% below Northern European levels.
+</div>
+
+<h2>Strategy — what I'd actually do</h2>
+<div class="card"><div class="t">1. Apply to Talan (Spain) and N26 Customer Identity (Berlin) today.</div><div class="n2">Talan is the only posting found anywhere that combines an <em>explicit work-permit offer</em>, an English-only language bar, and <b>Camunda 8</b> — your rarest skill, straight from Flightright. N26's Customer Identity team is Keycloak/OAuth2 work with "relocation package with visa support" written into the posting. These two are the highest-probability applications on the entire list.</div></div>
+<div class="card"><div class="t">2. Lead every German application with your two Berlin employers.</div><div class="n2">Flightright and XSonardive already paid you. German hiring managers systematically discount remote-from-Cairo candidates — naming two Berlin companies in your first line neutralises that objection before it forms. This is your single biggest structural advantage and most candidates in your position don't have it.</div></div>
+<div class="card"><div class="t">3. Say the visa route out loud, by name.</div><div class="n2">"I qualify for the EU Blue Card under the shortage-occupation threshold of €45,934" reads as competent. "I would need visa sponsorship" reads as a problem. Same fact, opposite effect. Use the Blue Card for Germany, kennismigrant for NL, Positive List ("Software Backend Developer") for Denmark, HQP/UGE-CE for Spain.</div></div>
+<div class="card"><div class="t">4. Close the cloud-native gap.</div><div class="n2">Kubernetes and Terraform are described as table stakes for 2026 backend roles, not bonuses. Your CV has Docker, Jenkins and AWS but no K8s or IaC. A pure Spring Boot + React profile without them reads as slightly dated to European reviewers. Worth a CKAD or even a weekend project you can point to — it's the cheapest single upgrade to your hit rate.</div></div>
+<div class="card"><div class="t">5. Add a Kotlin line.</div><div class="n2">Roughly half the German and Danish JDs say "Java/Kotlin" or "JVM language". Your Java transfers directly, but reviewers pattern-match on the literal word. One honest line — "comfortable picking up Kotlin; the JVM ecosystem is the same" — costs nothing and unlocks a chunk of the list.</div></div>
+<div class="card"><div class="t">6. Sequence: Germany → Netherlands → Denmark → Spain.</div><div class="n2">Germany has the most volume and the friendliest shortage-occupation threshold. NL has the hardest legal gate but the highest salaries and a closing 30%-ruling window. Denmark's Positive List is a genuinely cheap door that few people use. Spain is easiest to get approved but hardest to find roles in, and pays least. Note the market shape: 2026 EU tech hiring is a <em>barbell</em> — juniors and seniors are moving, mid-level (3–5 yrs) is the slowest segment. At 6 years you're just above the slow zone; lean on the differentiators.</div></div>
+
+<h2>Dead ends — don't waste time here</h2>
+<ul class="dead" id="dead"></ul>
+
+<footer>
+Built 10 Aug 2026. Every URL here was fetched and confirmed live at time of research — but job postings expire fast, so a dead link means the role closed, not that the link was wrong. Tick boxes to track applications; the state lives in the page for this session only.<br>
+Primary sources: ind.nl · nyidanmark.dk · make-it-in-germany.com · inclusion.gob.es · arbeitnow.com · thehub.io · relocate.me · company career pages.
+</footer>
+
+</div>
+<script>
+const JOBS = [
+// ============ NETHERLANDS ============
+{c:"Picnic",r:"Senior Software Engineer – Logistics",loc:"Amsterdam",ctry:"NL",url:"https://jobs.picnic.app/en/vacancies/JL7HPM5U/engineering/senior-software-engineer-logistics/amsterdam/north-holland/netherlands",vis:"explicit",ve:"Relocation package includes <em>visa services</em>, flight ticket, temporary housing. \"We offer lots of support for our many expat colleagues.\"",m:9,tier:"A",req:"5+ yrs · Java 21/25, Spring Boot 3.5, Reactor, Kafka, RabbitMQ, PostgreSQL, MongoDB, Docker, K8s, AWS. Office-based. Dutch not required."},
+{c:"Picnic",r:"Senior Software Engineer – Warehouse Systems",loc:"Amsterdam",ctry:"NL",url:"https://jobs.picnic.app/en/vacancies/JNST8XG5/engineering/senior-software-engineer-warehouse-systems/amsterdam/north-holland/netherlands",vis:"explicit",ve:"Same relocation/visa-services package. \"Based in or happy to relocate to the Netherlands.\"",m:9,tier:"A",req:"5+ yrs · Java 21/25, Spring, PostgreSQL, RabbitMQ, Kafka, AWS, K8s, Datadog."},
+{c:"Picnic",r:"Senior Software Engineer – Store",loc:"Amsterdam",ctry:"NL",url:"https://jobs.picnic.app/en/vacancies/JK7AAZ6V/engineering/senior-software-engineer-store/amsterdam/north-holland/netherlands",vis:"explicit",ve:"\"It can be daunting starting a new job AND moving to a new country. That's why we offer lots of support for our many expat colleagues.\"",m:9,tier:"A",req:"5+ yrs Java · Spring Boot/Reactor, React, TypeScript, Kafka, RabbitMQ, Postgres, Mongo, AWS. Wants AI/agentic tooling fluency."},
+{c:"Adyen",r:"Java Software Engineer / Senior Java Engineer (Customer Experience Solution)",loc:"Amsterdam",ctry:"NL",url:"https://careers.adyen.com/vacancies/6761873-java-software-engineer-senior-java-engineer?locale=en",vis:"likely",ve:"No sponsorship text in posting. Adyen is a widely documented IND recognised sponsor that relocates internationally. \"Office-first company — we do not offer remote-only roles.\"",m:9,tier:"A",req:"Java, REST APIs, web services, SQL/PostgreSQL, high-throughput services. Nice-to-have: RabbitMQ, Kafka, Elasticsearch."},
+{c:"Picnic",r:"Software Engineer – Consumer Products",loc:"Amsterdam",ctry:"NL",url:"https://grnh.se/l5168ogd1us",vis:"explicit",ve:"\"Advanced relocation package including <em>visa services</em>, temporary housing, and adaptation tips.\"",m:8,tier:"A",req:"2–5 yrs Java · Spring Boot, React, Kafka, RabbitMQ, Postgres, Mongo, AWS, K8s."},
+{c:"Picnic",r:"Software Engineer – Logistics",loc:"Amsterdam",ctry:"NL",url:"https://jobs.picnic.app/en/vacancies/J0PV84IE/engineering/software-engineer-logistics/amsterdam/north-holland/netherlands",vis:"explicit",ve:"Same Picnic expat/relocation support incl. visa services.",m:8,tier:"A",req:"1–5 yrs · Java 21/25, Spring 6, React/Angular, Kafka, RabbitMQ, Postgres, Mongo, AWS."},
+{c:"Picnic",r:"Software Engineer – Store",loc:"Amsterdam",ctry:"NL",url:"https://jobs.picnic.app/en/vacancies/JWR07K4W/engineering/software-engineer-store/amsterdam/north-holland/netherlands",vis:"explicit",ve:"Same Picnic expat/relocation support.",m:8,tier:"B",req:"2–5 yrs Java · Spring, React, TypeScript, Kafka, Postgres."},
+{c:"Uber",r:"Software Engineer II (AdTech – Java/Go)",loc:"Amsterdam",ctry:"NL",url:"https://www.uber.com/global/en/careers/list/157344/",vis:"explicit",ve:"Uber Amsterdam postings list <em>\"Work Visa Sponsorship\"</em> under Professional Development benefits.",m:7,tier:"B",req:"Java/Go, backend services at scale."},
+{c:"Uber",r:"Software Engineer II – Developer Platform",loc:"Amsterdam",ctry:"NL",url:"https://www.uber.com/global/en/careers/list/157453/",vis:"explicit",ve:"Same Uber Amsterdam \"Work Visa Sponsorship\" benefit.",m:6,tier:"B",req:"Backend platform / developer tooling."},
+{c:"Picnic",r:"Front-End Engineer (React / React Native) – Store & Web",loc:"Amsterdam",ctry:"NL",url:"https://jobs.picnic.app/en/vacancies/J6U4S0TL/engineering/front-end-engineer-react-react-native-store-and-web/amsterdam/north-holland/netherlands",vis:"explicit",ve:"Same Picnic expat/relocation support.",m:6,tier:"B",req:"4+ yrs · React, React Native, TypeScript, RxJS, Redux, Next.js, Jest."},
+{c:"Uber",r:"Staff Software Engineer (Java / Spring Boot – Java Platform)",loc:"Amsterdam",ctry:"NL",url:"https://www.uber.com/global/en/careers/list/159033/",vis:"explicit",ve:"Posting benefits explicitly include <em>\"Work Visa Sponsorship\"</em>.",m:6,tier:"C",req:"Deep Spring/Spring Boot, Java libraries & frameworks, OSS contribution. Staff level — a stretch at 6 yrs."},
+{c:"Backbase",r:"Distinguished Engineer (Technology)",loc:"Amsterdam",ctry:"NL",url:"https://www.backbase.com/careers/jobs/7941969-distinguished-engineer",vis:"unknown",ve:"No sponsorship text. Established Amsterdam fintech hiring internationally, hybrid.",m:5,tier:"C",req:"Java, Maven, Spring JPA/Hibernate, microservices, Tomcat, CI/CD, cloud. <b>Banking/fintech domain an advantage</b> — your exact domain, but seniority is far above your band."},
+{c:"Picnic",r:"Tech Lead (Java)",loc:"Amsterdam",ctry:"NL",url:"https://jobs.picnic.app/en/vacancies/JT8TU1ZC/engineering/tech-lead-java/amsterdam/north-holland/netherlands",vis:"explicit",ve:"\"Relocation support, free Dutch classes, and expat integration to help you land well from day one.\"",m:5,tier:"C",req:"7+ yrs backend + 2 yrs leading teams · Java 21/25, Spring Boot 3.5, Kafka, RabbitMQ, Postgres, Mongo, AWS."},
+{c:"Optiver",r:"Software Engineer – Real-Time Pricing",loc:"Amsterdam",ctry:"NL",url:"https://www.optiver.com/join-us/jobs/technology/amsterdam/software-engineer-real-time-pricing/",vis:"explicit",ve:"Strongest explicit statement found in NL: <em>\"Competitive relocation packages and visa sponsorship where necessary for expats.\"</em>",m:4,tier:"C",req:"Large-scale distributed/real-time systems. C++ a plus. Stack mismatch, but sponsorship is unambiguous."},
+{c:"Adyen",r:"Staff Engineer (Java) – Merchant Fraud Prevention",loc:"Amsterdam",ctry:"NL",url:"https://job-boards.greenhouse.io/adyen/jobs/8003083",vis:"likely",ve:"No explicit text; Adyen relocates internationally. Office-first.",m:4,tier:"C",req:"Staff-level: large-scale distributed systems, ML infra, KYC/identity. Fintech domain fits, seniority does not."},
+{c:"Coolblue",r:"C# Developer",loc:"Rotterdam",ctry:"NL",url:"https://www.coolblue.nl/en/vacancies/c-developer",vis:"unknown",ve:"⚠️ Coolblue tags relocation <em>per vacancy</em>. This one is not tagged \"Relocation possible\" — check before applying.",m:4,tier:"C",req:"3+ yrs C# .NET 8, Web API/MVC/REST/GraphQL, AWS microservices, Oracle/MySQL/Postgres/DynamoDB, React a bonus."},
+{c:"Ahold Delhaize (Albert Heijn)",r:"Backend Developer (Kotlin/Java, Microservices, Kafka)",loc:"Zaandam",ctry:"NL",url:"https://careers.aholddelhaize.com/vacancy/2802/backend-developer-kotlin-java-microservices-kafka-supply-chain-2",vis:"no",ve:"❌ Requires being <em>\"Already located in The Netherlands\"</em>. Do not apply from Cairo.",m:0,tier:"X",req:"5+ yrs backend; Kotlin/Java, MongoDB, Docker, K8s, Kafka, Azure. Up to €80k incl. holiday allowance."},
+{c:"C Teleport",r:"Lead Software Engineer",loc:"Rotterdam",ctry:"NL",url:"https://relocate.me/netherlands/rotterdam/c-teleport/lead-software-engineer-team-lead-2-squads-10270",vis:"no",ve:"❌ <em>\"We do not relocate candidates currently based outside the country.\"</em>",m:0,tier:"X",req:"7+ yrs .NET/C#, 2+ yrs lead, PostgreSQL, RabbitMQ, AWS, DDD/CQRS."},
+
+// ============ GERMANY ============
+{c:"N26",r:"Backend Engineer – Customer Identity",loc:"Berlin",ctry:"DE",url:"https://n26.com/en-eu/careers/positions/7996816?gh_jid=7996816",vis:"explicit",ve:"Posting text: <em>\"A relocation package with visa support for those who need it.\"</em>",m:10,tier:"A",req:"JVM language + Spring Boot at scale, microservices, Postgres + NoSQL, AWS, full professional English. <b>Identity/auth domain = your Keycloak/OAuth2 work.</b>"},
+{c:"N26",r:"Backend Engineer – Payments",loc:"Berlin / Barcelona",ctry:"DE",url:"https://n26.com/en-eu/careers/positions/7899294?gh_jid=7899294",vis:"explicit",ve:"N26 careers boilerplate: relocation package with visa support.",m:10,tier:"A",req:"JVM/Spring Boot, microservices, AWS. <b>Digital-banking payments = your exact domain (Bank Albilad).</b>"},
+{c:"Zalando",r:"Backend Engineer – ZEOS (all genders)",loc:"Berlin",ctry:"DE",url:"https://jobs.zalando.com/en/jobs/2724254-Backend-Engineer---ZEOS-(all-genders)",vis:"explicit",ve:"Posting: <em>\"Relocation assistance available (subject to prior agreement).\"</em> ⚠️ Screening question asks if you hold an EU work permit — answer honestly and flag Blue Card eligibility.",m:9,tier:"A",req:"\"Professional Java development experience with Spring Boot\", microservices + REST APIs, Gradle, CI/CD, AWS + Kubernetes, strong English."},
+{c:"SAP Fioneer",r:"Senior Backend Engineer (m/f/d)",loc:"Germany (remote)",ctry:"DE",url:"https://www.arbeitnow.com/jobs/companies/fioneer/remote-senior-backend-engineer-germany-232980",vis:"likely",ve:"Listed under Arbeitnow's visa-sponsorship filter and on Jaabz's visa-sponsorship board. Confirm at first screening.",m:9,tier:"A",req:"Java and/or Kotlin, Spring Boot, Azure + Kubernetes, distributed systems, PostgreSQL, Redis, Kafka or RabbitMQ. <b>Banking/insurance software = your fintech domain.</b>"},
+{c:"Doctolib",r:"Senior Backend Engineer (Java/Kotlin) (m/f/x)",loc:"Berlin",ctry:"DE",url:"https://careers.doctolib.com/jobs/senior-backend-engineer-java-kotlin-m-f-x-7811591003/",vis:"likely",ve:"Appears under Arbeitnow's visa-sponsorship filter. No in-posting visa language — confirm at screening.",m:9,tier:"A",req:"Java, Kotlin, Spring Boot; integration complexity across large partner networks; AI-assisted coding; fluent English; hybrid 2 remote days/wk."},
+{c:"Flix (FlixBus)",r:"Senior Software Engineer (Kotlin, Java) (m/f/d)",loc:"Berlin",ctry:"DE",url:"https://www.arbeitnow.com/jobs/companies/flix/senior-software-engineer-kotlinjava-berlin-284017",vis:"likely",ve:"Flix hires internationally across 2 German hubs; listed on Arbeitnow. No in-posting visa clause — confirm at screening.",m:9,tier:"A",req:"<b>5–7 yrs — exactly your band.</b> Kotlin or Java, Spring Boot + Spring Data, event-driven/async, AWS, DynamoDB + relational. English only. <b>Transportation domain = Flairstech/Cubic.</b>"},
+{c:"Flix (FlixBus)",r:"Senior Software Engineer (Kotlin, Java) (m/f/d)",loc:"Munich",ctry:"DE",url:"https://www.arbeitnow.com/jobs/companies/flix/senior-software-engineer-kotlinjava-munich-429728",vis:"likely",ve:"Same as Berlin req.",m:9,tier:"A",req:"Same, plus \"complex, data-heavy domains (ideally Finance)\" — matches your fintech work."},
+{c:"Raisin",r:"Senior Software Engineer – US Payments & Partner Operations",loc:"Berlin",ctry:"DE",url:"https://www.arbeitnow.com/jobs/companies/raisin/senior-software-engineer-us-payments-and-partner-operations-berlin-39778",vis:"explicit",ve:"Raisin standard clause: <em>\"You are moving from another country or city to join us? We may support your relocation.\"</em> Also on Arbeitnow visa board.",m:9,tier:"A",req:".NET, SQL Server, React JS, Node.js, Go, Java/Spring Boot, GraphQL, MongoDB, OAuth. <b>Hits your C#/.NET + SQL Server + React + Spring + MongoDB + OAuth2 all at once.</b>"},
+{c:"N26",r:"Senior Backend Engineer",loc:"Berlin / Barcelona",ctry:"DE",url:"https://n26.com/en-eu/careers/positions/7811482?gh_jid=7811482",vis:"explicit",ve:"Relocation package with visa support.",m:9,tier:"A",req:"Senior JVM/Spring Boot, microservices, Postgres, AWS."},
+{c:"N26",r:"Senior Backend Engineer – Connectivity",loc:"Berlin / Barcelona",ctry:"DE",url:"https://n26.com/en-eu/careers/positions/7992597?gh_jid=7992597",vis:"explicit",ve:"Relocation package with visa support.",m:9,tier:"B",req:"JVM/Spring Boot, integrations, event-driven."},
+{c:"Flix (FlixBus)",r:"Full-stack (Java/Kotlin) Engineer – Team Payments",loc:"Berlin",ctry:"DE",url:"https://flix.careers/job/8525969002?gh_jid=8525969002",vis:"likely",ve:"URL from Flix's official Greenhouse board API — confirmed live listing.",m:9,tier:"B",req:"Java/Kotlin full-stack, payments domain. <b>Full-stack = your Java + React combo.</b>"},
+{c:"Flix (FlixBus)",r:"Full-stack (Java/Kotlin) Engineer – Team Payments",loc:"Munich",ctry:"DE",url:"https://flix.careers/job/8525970002?gh_jid=8525970002",vis:"likely",ve:"Same official Greenhouse board.",m:9,tier:"B",req:"Java/Kotlin full-stack, payments."},
+{c:"N26",r:"Senior Backend Engineer – Customer Risk Lifecycle",loc:"Berlin / Barcelona",ctry:"DE",url:"https://n26.com/en-eu/careers/positions/7656920?gh_jid=7656920",vis:"explicit",ve:"Relocation package with visa support.",m:8,tier:"B",req:"JVM/Spring Boot, risk/compliance flows. <b>Camunda BPM angle — name it explicitly.</b>"},
+{c:"Raisin",r:"Engineering Lead – Customer Accounting Team (m/f/d)",loc:"Berlin",ctry:"DE",url:"https://job-boards.eu.greenhouse.io/raisin/jobs/4845620101",vis:"explicit",ve:"<em>\"You are moving from another country or city to join us? We may support your relocation.\"</em>",m:8,tier:"B",req:"Java, Spring Boot, MySQL, Kafka, AWS, TypeScript, ReactJS, React Native — near-identical stack. But needs 8+ yrs + 1 yr people management."},
+{c:"GetYourGuide",r:"Senior Software Engineer (Backend focused) – Supply",loc:"Berlin",ctry:"DE",url:"https://www.getyourguide.careers/jobs/8034895",vis:"unknown",ve:"Application screens on \"Do you have a valid visa/work permit for Germany?\" — no sponsorship promise. Long track record of international hires in Berlin.",m:7,tier:"B",req:"Screening question: \"How comfortable do you feel working with Java and Spring Boot?\" Berlin, English-speaking, travel-tech."},
+{c:"Raisin",r:"(Senior) Mobile React Native Engineer – Platform (m/f/d)",loc:"Berlin",ctry:"DE",url:"https://job-boards.eu.greenhouse.io/raisin/jobs/4823181101",vis:"explicit",ve:"<em>\"We may support your relocation.\"</em>",m:7,tier:"B",req:"3+ yrs React Native, TypeScript, Redux, REST/GraphQL, Expo EAS. Lower bar, fintech, your React Native skill."},
+{c:"SumUp",r:"Backend Engineer – Cards",loc:"Berlin",ctry:"DE",url:"https://sumup.com/careers/positions/8583444002?gh_jid=8583444002",vis:"likely",ve:"SumUp Berlin postings list \"relocation assistance\" among benefits; appears on Arbeitnow's visa-sponsorship board.",m:7,tier:"B",req:"Kotlin production experience (Java/Go/Elixir also used), distributed systems, API design, relational DBs, cloud-native, containers, CI/CD. Fintech/cards."},
+{c:"Urban Sports Club",r:"Senior Backend Engineer (all genders) – Golang",loc:"Berlin",ctry:"DE",url:"https://www.arbeitnow.com/jobs/companies/urban-sports-club/senior-backend-engineer-all-genders-golang-berlin-211662",vis:"explicit",ve:"Strongest explicit statement in Germany: <em>\"We're open to relocation and providing support with our visa agency.\"</em>",m:6,tier:"C",req:"6+ yrs Go — but <b>OAuth2, OIDC, Keycloak</b> identity work is a direct hit on your Keycloak experience. GCP/AWS."},
+{c:"SumUp",r:"Senior Backend Engineer – Golang",loc:"Berlin",ctry:"DE",url:"https://www.sumup.com/careers/positions/berlin-germany/engineering/senior-backend-engineer-golang/8576657002/",vis:"explicit",ve:"Posting benefits list: <em>\"…relocation assistance, subsidised office lunches\"</em>.",m:6,tier:"C",req:"Go primary; Postgres, AWS, Docker, K8s, Terraform, Kafka/RabbitMQ event-driven. Go is the gap."},
+{c:"MOIA (VW Group)",r:"Senior Backend Engineer – Vehicle Mission",loc:"Berlin",ctry:"DE",url:"https://de.linkedin.com/jobs/view/senior-backend-engineer-vehicle-mission-all-genders-at-moia-operations-germany-gmbh-4440906604",vis:"explicit",ve:"Posting quoted on Jaabz visa board: <em>\"Relocation support with service provider (visa, administration, etc.)\"</em>",m:6,tier:"C",req:"TypeScript, AWS IoT/Lambda/DynamoDB/SQS, MQTT, serverless. Not Java — but ridepooling/transportation domain fit."},
+{c:"Wolt",r:"Backend Engineer (Kotlin)",loc:"Berlin",ctry:"DE",url:"https://careers.wolt.com/en/jobs",vis:"no",ve:"❌ Posting states: <em>\"We work in distributed teams, but might not be able to offer fully remote work or relocation.\"</em>",m:0,tier:"X",req:"Kotlin backend. Don't waste an application."},
+
+// ============ SPAIN ============
+{c:"Talan",r:"Backend Java/Spring Boot Developer (Camunda 8)",loc:"Málaga (remote within Spain)",ctry:"ES",url:"https://jobs.smartrecruiters.com/Talan/744000139956166",vis:"explicit",ve:"Posting states <em>\"Possibility to manage work permits\"</em>. Listed as visa-verified on spainjobs.io.",m:10,tier:"A",req:"Java 11+, Spring Boot/MVC/Data JPA/Cloud Config, <b>Camunda 8 BPMN</b>, microservices, REST, JUnit/Mockito/Cucumber, CI/CD, 3+ yrs, English C1. Spanish only \"nice to have\". <b>The single best match found anywhere — Camunda is your rarest skill.</b> ⚠️ Confirm salary clears €41,356."},
+{c:"EPAM",r:"Java Developer",loc:"Málaga",ctry:"ES",url:"https://relocate.me/spain/malaga/epam/java-developer-5751",vis:"explicit",ve:"Relocation package: flight tickets, temp housing, housing search, <em>\"visa services\"</em>.",m:9,tier:"A",req:"4–7 yrs, Java core, Spring, REST APIs."},
+{c:"Glovo",r:"Senior Backend Engineer",loc:"Barcelona",ctry:"ES",url:"https://careers.glovoapp.com/job/senior-backend-engineer-they-she-he-in-barcelona-spain-jid-744000112199783/",vis:"likely",ve:"This posting is silent, but Glovo's own Barcelona backend posting on relocate.me advertised \"Advanced relocation package… flight ticket, temporary housing, visa services\" (now archived).",m:8,tier:"A",req:"Java, OOP + architecture, relational DBs, concurrency, event-driven, 5+ yrs, CS degree. Teams incl. Payments, Fraud, Dispatching."},
+{c:"Nuvolar",r:"Senior Java Developer",loc:"Barcelona (hybrid)",ctry:"ES",url:"https://job-boards.eu.greenhouse.io/nuvolar/jobs/4947707101",vis:"unknown",ve:"None stated. English-only requirement (\"professional working proficiency in English\") — good sign for an international hire.",m:8,tier:"B",req:"Java, Spring, Spring Boot, SQL, Git, microservices, AWS/Azure, backend APIs. Healthcare data platform."},
+{c:"EPAM",r:"Senior Java/Scala Developer",loc:"Málaga (hybrid)",ctry:"ES",url:"https://careers.epam.com/en/vacancy/senior-java-scala-developer-bltl0lk65djvimbyz4t_en",vis:"explicit",ve:"EPAM \"Without Borders\" Málaga relocation programme: one-way tickets, temp housing, relocation documentation + consulate logistics.",m:7,tier:"B",req:"7+ yrs (stretch), Java or Scala, AWS serverless, SOLID/OOD, CI/CD; Terraform/K8s/Python a plus; fintech/trading domain a plus."},
+{c:"Schwarz Digits",r:"Backend Engineer (m/f/d)",loc:"Barcelona (hybrid)",ctry:"ES",url:"https://schwarz-digits.de/en/jobsearch/backend-engineer-m-f-d-48222",vis:"unknown",ve:"None stated. \"Proficiency in English is required.\"",m:7,tier:"B",req:".NET 6+, Kubernetes, Kafka/RabbitMQ, MongoDB + SQL, GCP, CI/CD, microservices, 5+ yrs."},
+{c:"Altia",r:"Senior Full-Stack Developer (Java + React/Angular)",loc:"Madrid (on-site)",ctry:"ES",url:"https://www.spainjobs.io/companies/altia/senior-full-stack-developer-java-reactangular",vis:"unknown",ve:"None stated. Altia's sibling Málaga Java role was confirmed English-only, so the language bar is likely low.",m:6,tier:"B",req:"Java + React/Angular full-stack."},
+{c:"Affirm",r:"Senior Software Engineer, Backend (Card)",loc:"Remote, Spain",ctry:"ES",url:"https://www.spainjobs.io/companies/affirm/senior-software-engineer-backend-card--6591966d49",vis:"likely",ve:"Aggregator-verified visa-sponsorship badge on spainjobs.io. ⚠️ \"Remote Spain\" roles often still require existing work authorization.",m:5,tier:"C",req:"Backend fintech / card payments — domain fit."},
+{c:"Amazon",r:"Systems Engineer / DevOps Eng, ESC Managed Operations",loc:"Madrid",ctry:"ES",url:"https://www.spainjobs.io/companies/amazon/systems-engineerdevops-eng-esc-managed-operations--738d040e3f",vis:"likely",ve:"Aggregator-verified visa-sponsorship badge. Amazon reliably sponsors.",m:5,tier:"C",req:"DevOps/systems, not core Java — off-stack."},
+{c:"N26",r:"Senior Product Security Engineer",loc:"Barcelona",ctry:"ES",url:"https://www.spainjobs.io/companies/n26/senior-product-security-engineer--549b8a8f1e",vis:"explicit",ve:"Aggregator-verified visa-sponsorship badge. <b>Confirms N26 Barcelona sponsors</b> — apply to N26's Berlin/Barcelona backend reqs instead.",m:4,tier:"C",req:"Product security. Off-stack."},
+{c:"BASF",r:"Java Backend Developer",loc:"Madrid",ctry:"ES",url:"https://www.basf.com/global/en/careers",vis:"no",ve:"❌ Near-perfect stack (Java 21, Spring Boot 3.x, Spring Data/Integration/Batch/Security, PostgreSQL, Docker, 3–5 yrs) but <b>requires fluent Spanish</b>.",m:0,tier:"X",req:"Excluded on language."},
+
+// ============ DENMARK ============
+{c:"Monta",r:"Mid Level Backend Engineer – Financial Services",loc:"Copenhagen",ctry:"DK",url:"https://thehub.io/jobs/6a29faa32dc0a2d62f313722",vis:"likely",ve:"Not stated in posting. <b>Structural:</b> title maps to \"Software Backend Developer\" on Denmark's Positive List → permit route with <em>no fixed salary floor</em>.",m:9,tier:"A",req:"Java/Kotlin, production backend, EU financial regulations, payment infrastructure, event-driven architectures (Kafka), English required. <b>Mid-level = your band.</b>"},
+{c:"Shine (formerly Ageras)",r:"Software Engineer (All Levels) – Engineering Pool",loc:"Copenhagen + Madrid",ctry:"DK",url:"https://thehub.io/jobs/6a0ba930ecce1cbb42797b8a",vis:"likely",ve:"Not stated. Positive List route applies. <b>One application, two jurisdictions (DK + ES).</b>",m:8,tier:"A",req:"TypeScript/Node, PHP, Kotlin, React / React Native / Next.js, NestJS, microservices, event-driven, CQRS, event sourcing, DDD, REST, Pub/Sub, Azure/GCP/AWS, K8s, PostgreSQL/MySQL. Mid/Senior/Staff all open."},
+{c:"Shine (formerly Ageras)",r:"Staff Engineer – Payment",loc:"Copenhagen (2 remote days/wk)",ctry:"DK",url:"https://thehub.io/jobs/6a5ac21dfb0d306cbef8c56c",vis:"likely",ve:"Not stated. Positive List route applies.",m:8,tier:"B",req:"Java, Spring Boot, Spring WebFlux/Project Reactor, GCP Cloud Run, CloudSQL PostgreSQL, Pub/Sub, Liquibase, R2DBC, GraalVM, OpenAPI contract-first, PCI DSS, payments. Staff level — a stretch."},
+{c:"Complir",r:"Backend Engineer",loc:"Copenhagen (on-site HQ)",ctry:"DK",url:"https://thehub.io/jobs/6a59e4b0b3e5e78fdbe99cf5",vis:"likely",ve:"Not stated. Positive List route applies.",m:7,tier:"B",req:"5+ yrs backend, API design, data modeling, <b>enterprise/ERP integrations (SAP, Dynamics, inRiver, Akeneo, Centric)</b>, PIM/PLM. Directly matches your ERP/e-commerce work at MedadSoft."},
+{c:"Queue-it",r:"Senior Software Engineer (Full-Stack)",loc:"Copenhagen (Vesterbro)",ctry:"DK",url:"https://thehub.io/jobs/6a0e4b64871be3f961d6532a",vis:"likely",ve:"Not stated. Company describes <em>\"40+ nationalities\"</em> — strong signal of an existing sponsorship pipeline.",m:7,tier:"B",req:".NET / .NET Core, REST APIs, Angular, relational DBs, 5+ yrs; preferred: distributed/high-scale, event-driven architectures & messaging, cloud, containers, CI/CD."},
+{c:"Complir",r:"Fullstack Engineer",loc:"Copenhagen",ctry:"DK",url:"https://thehub.io/jobs/6a59e61fb3e5e78fdbe9b44f",vis:"likely",ve:"Not stated. Positive List route applies.",m:6,tier:"B",req:"Fullstack counterpart to the Backend Engineer req."},
+{c:"Teton",r:"Software Engineer (Backend)",loc:"Copenhagen (on-site required)",ctry:"DK",url:"https://thehub.io/jobs/6a2ca6e4f7fd1a2ebcfe0e6c",vis:"likely",ve:"Not stated, but posting explicitly requires physical Copenhagen presence → relocation implied.",m:6,tier:"B",req:"Distributed data ingestion, real-time event pipelines, APIs/backend services, databases, MQTT, cloud infra. Mid–Senior; \"ability over credentials\"."},
+{c:"Danske Bank",r:"Lead Java Developer",loc:"Denmark",ctry:"DK",url:"https://ejqi.fa.ocs.oraclecloud.eu/hcmUI/CandidateExperience/en/sites/CX_1001/job/23333",vis:"explicit",ve:"<b>Strongest structural evidence in Denmark</b> — Danske Bank A/S (CVR 61126228) is on SIRI's official <em>Fast-track certified companies</em> list, i.e. a live 1-month sponsorship channel.",m:6,tier:"B",req:"\"Lead\" level is a stretch at 6 yrs, but Danske is a large Java/fintech shop and your banking domain fits."},
+{c:"GoWish (Ønskeskyen)",r:"Backend Engineer",loc:"Copenhagen (Østerbro)",ctry:"DK",url:"https://thehub.io/jobs/6a5eb7e31889e00b4d450141",vis:"unknown",ve:"Not stated. Applications reviewed mid–late August — apply now.",m:5,tier:"C",req:"3+ yrs backend, JS/TypeScript, GraphQL, SQL; plus NestJS, GCP, PostgreSQL, Docker/K8s, Kafka, Prometheus/Grafana."},
+{c:"GoWish (Ønskeskyen)",r:"Backend Engineer – Personalization",loc:"Copenhagen",ctry:"DK",url:"https://thehub.io/jobs/6a4c4232d0fe82a7dedf9090",vis:"unknown",ve:"Not stated.",m:5,tier:"C",req:"As above, personalization focus."},
+{c:"Spirii",r:"Senior Backend Software Engineer",loc:"Copenhagen (on-site)",ctry:"DK",url:"https://thehub.io/jobs/6a746b21298653ca2c10a0f8",vis:"likely",ve:"Not stated, but <em>\"fluent English required; Danish explicitly not required\"</em> — clear international-hire signal.",m:5,tier:"C",req:"Node.js, NestJS, TypeScript, AWS, SQL/data modeling, event-driven queue-based architectures, Redis/NoSQL, ERP integration a plus, 7+ yrs."},
+{c:"Spirii",r:"Tech Lead",loc:"Copenhagen",ctry:"DK",url:"https://thehub.io/jobs/6a672a42ec77206d105cdff2",vis:"likely",ve:"Same employer signal — Danish not required.",m:5,tier:"C",req:"Leadership + backend; EV charging platform."},
+{c:"Systematic A/S",r:"Java / Backend roles (all)",loc:"Copenhagen / Aarhus",ctry:"DK",url:"https://jobs.systematic.com/search/",vis:"no",ve:"❌ All roles require security clearance: <em>\"a clean criminal record and have lived in a NATO and/or EU country for the past seven years.\"</em> Structurally ineligible.",m:0,tier:"X",req:"Excluded."},
+{c:"Candeno A/S",r:"Backend roles (all)",loc:"Aarhus",ctry:"DK",url:"https://thehub.io/jobs",vis:"no",ve:"❌ Verbatim: <em>\"We do not offer visa sponsorship or relocation support. Applications that do not meet these conditions will not be considered.\"</em>",m:0,tier:"X",req:"Excluded. (Also PHP/Laravel, off-stack.)"}
+];
+
+const WATCH = [
+{c:"Camunda",ctry:"DE",url:"https://jobs.ashbyhq.com/camunda",note:"<b>Your single strongest differentiator</b> (Camunda BPM at Flightright). Ashby board shows zero German engineering roles today; they're 100% remote across 75+ countries. Check weekly, and try a referral via LinkedIn."},
+{c:"Scout24 (ImmoScout24)",ctry:"DE",url:"https://www.scout24.com/en/career/jobs",note:"Excellent statement: <em>\"Our relocation agency supports you with your visa process and an attractive relocation package.\"</em> A Full Stack Engineer role (Java/Kotlin, Spring, React, TypeScript — perfect stack) is on Relocate.me but not on their own board today. Verify before applying."},
+{c:"Delivery Hero",ctry:"DE",url:"https://careers.deliveryhero.com",note:"Software Engineer Java/Kotlin (Vendor) and Senior Backend Engineer Java/Kotlin – Logistics templates exist in Berlin (4+ yrs, Spring Boot, Hibernate, GCP+AWS, K8s), but all four JDs are currently marked expired. Re-check weekly."},
+{c:"AUTO1 Group",ctry:"DE",url:"https://www.auto1-group.com/en/careers/",note:"A Java Engineer (f/m/x) Berlin req (3+ yrs Java, Spring Boot, Spring Cloud, REST, microservices — textbook match) exists on Arbeitnow; Relocate.me lists a Senior Team Lead Java role with visa assistance. Their Arbeitnow page shows 0 jobs — verify on their own site."},
+{c:"Trade Republic",ctry:"DE",url:"https://traderepublic.com/careers",note:"Frequently cited Berlin sponsor with Java/Kotlin backend teams. Their Ashby endpoint 404'd — check the site directly."},
+{c:"Solaris SE",ctry:"DE",url:"https://job-boards.greenhouse.io/solarisbank/jobs/8421770002",note:"BaaS / digital banking = ideal domain. Berlin Senior Software Engineer open at €77k–€87k (well over the Blue Card threshold). Stack is Go, no visa clause — but the domain fit justifies a speculative application."},
+{c:"Booking.com",ctry:"NL",url:"https://jobs.booking.com/booking/jobs",note:"Well-documented IND recognised sponsor with an in-house relocation team. Job pages are JS-rendered so I couldn't confirm which are live. Search Amsterdam + Engineering directly."},
+{c:"Adyen (full board)",ctry:"NL",url:"https://job-boards.greenhouse.io/adyen",note:"215 open roles globally; Amsterdam engineering currently skews Go/data/ML. Re-check weekly for new Java reqs."},
+{c:"Optiver (full tech list)",ctry:"NL",url:"https://www.optiver.com/join-us/jobs/technology/",note:"Only 4 Amsterdam tech roles live, but the sponsorship language is explicit and unambiguous. Check weekly."},
+{c:"Miro / TomTom / ASML",ctry:"NL",url:"https://miro.com/careers/open-positions/",note:"All three are known sponsors with JS-rendered boards I couldn't read. ASML's software roles skew C++, not Java."},
+{c:"EPAM Spain (Málaga)",ctry:"ES",url:"https://www.epam.com/careers/epam-without-borders/spain",note:"Explicit relocation programme, actively seeking Java/Scala, .NET, Python/Go, QA. Filter by \"relocation\" on the portal — highest-volume Spanish sponsor."},
+{c:"Altia",ctry:"ES",url:"https://www.spainjobs.io/companies/altia/",note:"Their Málaga Senior Java role (Java 17+, Spring Boot, Kafka, K8s, OAuth2/OIDC, English-only) just closed. Set an alert for a repost — it was a 9/10 match."},
+{c:"Accenture / Capgemini / CGI / Cognizant / IBM Danmark",ctry:"DK",url:"https://www.nyidanmark.dk/en-GB/Words-and-concepts/SIRI/Certified-companies/",note:"<b>All five are SIRI Fast-track certified</b> — the fastest legal route into Denmark (1 month). They are volume Java/Spring shops with standing sponsorship. Highest-leverage cold-apply targets in DK."},
+{c:"Siteimprove / 3Shape / Novo Nordisk / LEGO / Maersk Tankers",ctry:"DK",url:"https://www.nyidanmark.dk/en-GB/Words-and-concepts/SIRI/Certified-companies/",note:"Also SIRI Fast-track certified. Copenhagen SaaS + large enterprises with digital/IT divisions."},
+{c:"Workindenmark official job bank",ctry:"DK",url:"https://workindenmark.jobnet.dk/find-job",note:"The official English job bank + Positive List portal. JS-rendered so it must be browsed by hand — but it's the highest-value manual step for Denmark."}
+];
+
+const BOARDS = [
+{n:"IND Public Register of Recognised Sponsors",ctry:"NL",url:"https://ind.nl/en/public-register-recognised-sponsors/public-register-work",note:"<b>Hard legal gate.</b> A Dutch company cannot hire you as a kennismigrant unless it is on this list. Ctrl-F every NL employer here before applying. Updated monthly (last: 3 Aug 2026). Easier searchable mirror: <a href='https://indsponsors.nl/' target='_blank'>indsponsors.nl</a>"},
+{n:"Denmark Positive List (Higher Education)",ctry:"DK",url:"https://www.nyidanmark.dk/en-GB/You-want-to-apply/Work/Positive-List-Higher-Education",note:"<b>Your cheapest door into Denmark.</b> \"Software Backend Developer\" and \"Programmer and System Developer\" are listed (ICT category 25) → work permit with <em>no fixed salary floor</em>, bypassing the DKK 552,000 Pay Limit. Updated 1 Jan / 1 Jul. Fee DKK 6,810, ~1 month."},
+{n:"Arbeitnow — visa sponsorship filter",ctry:"DE",url:"https://www.arbeitnow.com/visa-sponsorship-jobs?search=java%20spring%20boot",note:"Strongest verified sponsorship filter of any board. Note there are two <em>separate</em> filters — also check <a href='https://www.arbeitnow.com/jobs-with-relocation?search=java' target='_blank'>jobs-with-relocation</a>. Keyword matching is loose."},
+{n:"The Hub (Nordic startups)",ctry:"DK",url:"https://thehub.io/jobs?countryCode=DK&search=java&sorting=newJobs",note:"2,000+ Nordic startup jobs. No visa filter, but most Danish scale-ups here hire internationally. Where most of the DK leads above came from."},
+{n:"relocate.me",ctry:"All",url:"https://relocate.me/international-jobs/back-end/netherlands",note:"Every listing is relocation-supported by construction. Free for candidates. Volume is thin (~7 in back-end at last check) — check weekly, don't rely on it. Swap the country slug: /germany, /spain, /denmark."},
+{n:"LinkedIn — NL boolean search",ctry:"NL",url:"https://www.linkedin.com/jobs/search/?keywords=%22Java%22%20AND%20%28%22visa%20sponsorship%22%20OR%20%22highly%20skilled%20migrant%22%20OR%20%22relocation%22%29&geoId=102890719&f_TPR=r604800&f_JT=F&sortBy=DD",note:"7-day window, newest first, full-time. Operators must be UPPERCASE."},
+{n:"LinkedIn — Germany boolean search",ctry:"DE",url:"https://www.linkedin.com/jobs/search/?keywords=%22Java%22%20AND%20%28%22visa%20sponsorship%22%20OR%20%22Blue%20Card%22%20OR%20%22relocation%22%29&geoId=101282230&f_TPR=r604800&f_JT=F&sortBy=DD",note:"Run daily — strong candidates are off the market in 10–14 days in competitive markets."},
+{n:"LinkedIn — Spain boolean search",ctry:"ES",url:"https://www.linkedin.com/jobs/search/?keywords=%22Java%22%20AND%20%28%22visa%20sponsorship%22%20OR%20%22work%20permit%22%20OR%20%22relocation%22%29&geoId=105646813&f_TPR=r604800&f_JT=F&sortBy=DD",note:"geoId 105646813."},
+{n:"LinkedIn — Denmark boolean search",ctry:"DK",url:"https://www.linkedin.com/jobs/search/?keywords=%22Java%22%20AND%20%28%22relocation%22%20OR%20%22work%20permit%22%20OR%20%22international%20candidates%22%29&geoId=104514075&f_TPR=r604800&f_JT=F&sortBy=DD",note:"Drop \"visa sponsorship\" for Denmark — Danish employers don't use the phrase."},
+{n:"Indeed NL (with negative keywords)",ctry:"NL",url:"https://nl.indeed.com/jobs?q=java+%28%22visa+sponsorship%22+OR+%22relocation+package%22+OR+%22highly+skilled+migrant%22%29+-%22no+visa+sponsorship%22+-%22unable+to+provide+visa%22+-%22does+not+require+sponsorship%22&l=Netherlands&fromage=14&sort=date",note:"⚠️ Critical: a naive \"visa sponsorship\" search returns mostly listings that <em>refuse</em> sponsorship. The negative keywords in this URL are doing the real work."},
+{n:"Landing.jobs",ctry:"ES",url:"https://landing.jobs/jobs",note:"Best Iberia option — has structured <em>\"Offers relocation\"</em> and <em>\"Offers visa support\"</em> checkboxes (tick them in the sidebar; deep links are robots-blocked). Only ~72 live listings."},
+{n:"SIRI Fast-track certified companies",ctry:"DK",url:"https://www.nyidanmark.dk/en-GB/Words-and-concepts/SIRI/Certified-companies/",note:"Official register of Danish employers who can use the 1-month fast-track. Work this list backwards — it's the highest-leverage asset for Denmark."},
+{n:"GermanTechJobs",ctry:"DE",url:"https://germantechjobs.de/en/jobs/Java/Berlin",note:"1,416 IT jobs, shows salary data. Cloudflare-blocked to automation so the visa filter is unverified — check the sidebar yourself."},
+{n:"Make it in Germany (official BMAS portal)",ctry:"DE",url:"https://www.make-it-in-germany.com/en/working-in-germany/job-listings/job-listings",note:"35,653 jobs. Government portal, EN/DE/ES/FR."},
+{n:"DEVjobs.de",ctry:"DE",url:"https://en.devjobs.de/jobs/java",note:"1,732 Java jobs, English UI, salary ranges shown (€38k–113k)."}
+];
+
+const DEAD = ["honeypot.io — shut down end of 2024, zombie marketing site still live","otta.com — absorbed into Welcome to the Jungle","jobsinamsterdam.com — domain parked / for sale","techmeetsvisa.com — DNS failure, does not resolve","visasponsorshipjobs.com — DNS failure, does not resolve","Jobbatical — pivoted to B2B HR SaaS, no candidate job board (their threshold guides are still accurate)","Wellfound / AngelList — no visa filter, structurally US-centric","EURES — exists for EU/EEA mobility; most postings assume you already hold work rights"];
+
+
+const F={ctry:"all",tier:"live",q:"",hideDone:false};
+const DONE=new Set();
+const flags={NL:"🇳🇱",DE:"🇩🇪",ES:"🇪🇸",DK:"🇩🇰",All:"🌍"};
+const visLabel={explicit:["ex","Visa in writing"],likely:["lk","Sponsorship likely"],unknown:["un","Not stated"],no:["no","Ruled out"]};
+const tierLabel={A:["tier","Apply first"],B:["tierB","Strong"],C:["tierC","Worth a shot"],X:["tierX","Ruled out"]};
+
+function match(j){
+  if(F.ctry!=="all"&&j.ctry!==F.ctry)return false;
+  if(F.tier==="live"&&j.tier==="X")return false;
+  if(F.tier==="A"&&j.tier!=="A")return false;
+  if(F.tier==="exp"&&(j.vis!=="explicit"||j.tier==="X"))return false;
+  if(F.hideDone&&DONE.has(j.url+j.r))return false;
+  if(F.q){const s=(j.c+" "+j.r+" "+j.loc+" "+j.req+" "+j.ve).toLowerCase();if(!s.includes(F.q))return false;}
+  return true;
+}
+const order={A:0,B:1,C:2,X:3};
+function render(){
+  const rows=JOBS.filter(match).sort((a,b)=>order[a.tier]-order[b.tier]||b.m-a.m||a.c.localeCompare(b.c));
+  document.getElementById("list").innerHTML = rows.length? rows.map(j=>{
+    const id=j.url+j.r, done=DONE.has(id);
+    const [vc,vl]=visLabel[j.vis], [tc,tl]=tierLabel[j.tier];
+    return `<div class="job t${j.tier}${done?' done':''}">
+      <input type="checkbox" class="cb" data-id="${encodeURIComponent(id)}" ${done?'checked':''} title="Mark as applied">
+      <div class="jb">
+        <div class="jh"><span class="co">${flags[j.ctry]} ${j.c}</span><span class="rt">${j.r}</span></div>
+        <div class="meta">${j.loc}</div>
+        <div class="badges"><span class="b ${tc}">${tl}</span><span class="b ${vc}">${vl}</span><span class="b m">Match ${j.m}/10</span></div>
+        <div class="ve"><b>Visa evidence:</b> ${j.ve}</div>
+        <div class="req">${j.req}</div>
+      </div>
+      <a class="apply${j.tier==='X'?' x':''}" href="${j.url}" target="_blank" rel="noopener">${j.tier==='X'?'Skip':'Apply →'}</a>
+    </div>`;
+  }).join("") : `<div class="card"><div class="n2">No roles match those filters.</div></div>`;
+  document.querySelectorAll(".cb").forEach(cb=>cb.onchange=e=>{
+    const id=decodeURIComponent(e.target.dataset.id);
+    e.target.checked?DONE.add(id):DONE.delete(id);render();
+  });
+  stats();
+}
+function stats(){
+  const live=JOBS.filter(j=>j.tier!=="X");
+  document.getElementById("sTotal").textContent=live.length;
+  document.getElementById("sA").textContent=live.filter(j=>j.tier==="A").length;
+  document.getElementById("sEx").textContent=live.filter(j=>j.vis==="explicit").length;
+  document.getElementById("sDone").textContent=DONE.size;
+  document.getElementById("sX").textContent=JOBS.filter(j=>j.tier==="X").length;
+}
+document.querySelectorAll(".chip[data-f]").forEach(c=>c.onclick=()=>{
+  document.querySelectorAll(`.chip[data-f="${c.dataset.f}"]`).forEach(x=>x.classList.remove("on","g"));
+  c.classList.add("on"); if(c.dataset.f==="tier")c.classList.add("g");
+  F[c.dataset.f]=c.dataset.v; render();
+});
+document.getElementById("q").oninput=e=>{F.q=e.target.value.toLowerCase().trim();render();};
+document.getElementById("hideDone").onclick=e=>{F.hideDone=!F.hideDone;e.target.classList.toggle("on");render();};
+
+document.getElementById("watch").innerHTML=WATCH.map(w=>
+  `<div class="card"><div class="t">${flags[w.ctry]} <a href="${w.url}" target="_blank" rel="noopener">${w.c}</a></div><div class="n2">${w.note}</div></div>`).join("");
+document.getElementById("boards").innerHTML=BOARDS.map(b=>
+  `<div class="card"><div class="t">${flags[b.ctry]||"🌍"} <a href="${b.url}" target="_blank" rel="noopener">${b.n}</a></div><div class="n2">${b.note}</div></div>`).join("");
+document.getElementById("dead").innerHTML=DEAD.map(d=>`<li>${d}</li>`).join("");
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+node_modules
+dist
+dist.zip
+*.local
+.DS_Store
+.vscode
+
+# Contains the mailbox password — keep it out of version control.
+public/contact.php
