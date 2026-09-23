@@ -25,6 +25,12 @@ export function Experience() {
                     <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                       <h3 className="text-lg font-semibold text-white">
                         {exp.role} <span className="text-accent">· {exp.company}</span>
+                        {exp.current && (
+                          <span className="ml-2 inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent/10 px-2 py-0.5 align-middle font-mono text-[10px] uppercase tracking-wider text-accent">
+                            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
+                            Current
+                          </span>
+                        )}
                       </h3>
                       <span className="font-mono text-xs text-slate-500">{exp.period}</span>
                     </div>

@@ -77,7 +77,7 @@ export function Hero() {
           </a>
           <a
             href={profile.cvUrl}
-            download
+            download={profile.cvFileName}
             className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-6 py-3 font-semibold text-white transition-colors hover:border-accent/60 hover:text-accent"
           >
             <FiDownload /> {profile.cvLabel}

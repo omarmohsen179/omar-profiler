@@ -5,9 +5,21 @@ export type Experience = {
   period: string
   highlights: string[]
   stack: string[]
+  current?: boolean
 }
 
 export const experiences: Experience[] = [
+  {
+    company: 'Bank Albilad',
+    role: 'Full Stack Developer',
+    location: 'Riyadh, Saudi Arabia · Remote',
+    period: 'Jul 2026 — Present',
+    current: true,
+    highlights: [
+      'Rejoined the digital banking team, building Spring Boot microservices and React.js modules that integrate core banking with enterprise services.',
+    ],
+    stack: ['Java 17', 'Spring Boot', 'Kafka', 'React.js', 'Keycloak', 'OAuth2'],
+  },
   {
     company: 'Flightright',
     role: 'Full Stack Developer',
@@ -15,12 +27,13 @@ export const experiences: Experience[] = [
     period: 'Mar 2025 — Jul 2026',
     highlights: [
       'Developed and maintained customer-facing legal-tech and claim-management platforms with Next.js and Spring Boot.',
-      'Designed RESTful APIs and microservices in Spring Boot, improving reliability, maintainability, and integration.',
+      'Designed RESTful APIs and microservices in Java 17 and Spring Boot 3, improving reliability, maintainability, and integration.',
       'Automated claim processing with Camunda BPM workflows, reducing manual operational effort.',
       'Built responsive Next.js interfaces, improving performance, SEO, and user experience.',
+      'Ran services on Linux in Docker containers across environments, handling deployment, log analysis, and shell-level debugging.',
       'Collaborated with product, design, and QA in an Agile environment.',
     ],
-    stack: ['Next.js', 'Spring Boot', 'Camunda BPM', 'REST APIs'],
+    stack: ['Java 17', 'Next.js', 'Spring Boot', 'Camunda BPM', 'REST APIs', 'Linux', 'Docker'],
   },
   {
     company: 'Bank Albilad',
@@ -31,10 +44,11 @@ export const experiences: Experience[] = [
       'Built microservices-based backend systems in Spring Boot integrating core banking apps with external enterprise services.',
       'Implemented Kafka-based messaging for asynchronous transaction processing, improving reliability by 20%.',
       'Customised full-stack banking modules across Spring Boot REST APIs and React.js dashboards.',
-      'Achieved 95% test coverage with unit and integration testing, improving production stability.',
+      'Tuned pooled HTTP clients for outbound enterprise integrations — max connections per route, keep-alive, and read/connect timeouts — keeping third-party core-banking calls stable under load.',
+      'Worked test-first (TDD) with JUnit and Mockito, reaching 95% test coverage across unit and integration suites and improving production stability.',
       'Secured banking integrations with Spring Security and OAuth2 / Keycloak.',
     ],
-    stack: ['Spring Boot', 'Kafka', 'React.js', 'Keycloak', 'OAuth2'],
+    stack: ['Java 17', 'Spring Boot', 'Kafka', 'React.js', 'Keycloak', 'OAuth2', 'HTTP Connection Pooling'],
   },
   {
     company: 'XSonardive',
@@ -50,14 +64,14 @@ export const experiences: Experience[] = [
   {
     company: 'Flairstech (Cubic)',
     role: 'Backend Developer',
-    location: 'Garbutt, Australia · Remote',
+    location: 'Townsville, Australia · Remote',
     period: 'Aug 2022 — Apr 2024',
     highlights: [
       'Supported the backend of an enterprise mass-transportation system with Spring Boot and Kafka, boosting real-time data processing efficiency by 20%.',
       'Built modular monolithic and microservice apps with Spring Boot, Java, and Hibernate.',
-      'Ran extensive backend testing with JUnit, Mockito, and Spring Boot Test.',
+      'Practised TDD, writing JUnit, Mockito, and Spring Boot Test suites ahead of implementation.',
     ],
-    stack: ['Spring Boot', 'Kafka', 'Hibernate', 'JUnit'],
+    stack: ['Spring Boot', 'Kafka', 'Hibernate', 'JUnit', 'TDD'],
   },
   {
     company: 'MedadSoft',

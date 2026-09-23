@@ -15,10 +15,11 @@ export function Contact() {
           {/* Left: pitch + working contact form */}
           <AnimatedOnScroll from="left">
             <p className="text-lg leading-relaxed text-slate-300">
-              I'm currently open to{' '}
-              <span className="text-accent">remote roles and freelance projects</span> with EU and US
-              teams. Whether you need a backend engineer for scalable microservices or a full-stack
-              developer to ship product, drop me a message below.
+              I'm actively seeking{' '}
+              <span className="text-accent">relocation across the EU and Asia</span>, and I'm also
+              open to remote roles and freelance projects. I'm available at short notice with no
+              notice period. Whether you need a backend engineer for scalable microservices or a
+              full-stack developer to ship product, drop me a message below.
             </p>
             <div className="mt-8">
               <ContactForm />
@@ -54,7 +55,7 @@ export function Contact() {
 
             <a
               href={profile.cvUrl}
-              download
+              download={profile.cvFileName}
               className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 px-6 py-3 font-semibold text-white transition-colors hover:border-accent/60 hover:text-accent"
             >
               <FiDownload /> Download CV

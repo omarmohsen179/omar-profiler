@@ -10,6 +10,13 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 5rem; /* offset for the sticky navbar */
+    /* The decorative aurora blobs are wider than small viewports; without this
+       they create a horizontal scrollbar and sideways rubber-banding on phones. */
+    overflow-x: hidden;
+  }
+
+  body {
+    overflow-x: hidden;
   }
 
   body {

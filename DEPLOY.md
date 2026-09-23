@@ -109,3 +109,51 @@ On cPanel there's nothing to configure — PHP runs the form automatically.
 
 Edit the content in `src/data/*.ts` (or components), then repeat steps 1–2. Because the
 built asset filenames are content-hashed, browsers pick up changes automatically.
+
+
+## Troubleshooting: "Download CV" saves an .html file
+
+**Symptom.** Clicking *Download CV* saves a small `.html` file instead of the PDF.
+
+**Cause.** The server returns **403 Forbidden** for the PDF and sends an HTML error page as
+the response body. The `download` attribute on the link makes the browser save whatever came
+back — so you get the error page saved under a `.pdf`/`.html` name. Confirm with:
+
+```bash
+curl -sI https://omarmohsen.dev/omar-mohsen-cv.pdf | head -1
+```
+
+A `403` means the file exists but Apache cannot read it. This happens when the file lands in
+`public_html` with mode **600** (`-rw-------`) instead of **644** (`-rw-r--r--`). Files copied
+from macOS or downloaded from mail/chat often carry 600.
+
+**Fix — cPanel File Manager**
+
+1. Open `public_html`, select `omar-mohsen-cv.pdf`, `omar-mohsen-cv-eu.pdf`, `favicon.svg`.
+2. Right-click → **Change Permissions**.
+3. Set **0644** (owner read+write, group read, world read). Directories need **0755**.
+
+Re-extracting the current `dist.zip` also fixes it: the archive now stores 644 on every file,
+and those permissions are applied on Extract.
+
+**Keep it fixed.** `scripts/build_cv.py` chmods the generated PDFs to 644, and the build/zip
+steps above preserve that. Verify any deploy with:
+
+```bash
+for f in index.html favicon.svg contact.php omar-mohsen-cv.pdf; do \
+  echo "$f $(curl -so /dev/null -w '%{http_code}' https://omarmohsen.dev/$f)"; done
+```
+
+All four should report `200`.
+
+## Regenerating the CV PDF
+
+The CV is generated from source, not hand-edited:
+
+```bash
+python3 scripts/build_cv.py
+```
+
+Edit the text in `scripts/cv_content.py` (supports `**bold**`), then rerun. It writes
+`Omar_Mohsen_CV_EU.pdf` and both `public/` copies at mode 644. Bump `cvUrl`'s `?v=` in
+`src/data/profile.ts` so browsers and cPanel don't serve a cached copy, then `npm run build`.

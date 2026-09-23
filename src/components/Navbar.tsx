@@ -73,7 +73,7 @@ export function Navbar() {
           ))}
           <a
             href={profile.cvUrl}
-            download
+            download={profile.cvFileName}
             className="ml-2 inline-flex items-center gap-2 rounded-lg border border-accent/50 px-4 py-2 text-sm font-medium text-accent transition-all hover:bg-accent/10 hover:shadow-glow"
           >
             <FiDownload /> Resume
@@ -112,7 +112,7 @@ export function Navbar() {
               ))}
               <a
                 href={profile.cvUrl}
-                download
+                download={profile.cvFileName}
                 onClick={() => setOpen(false)}
                 className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg border border-accent/50 px-4 py-3 font-medium text-accent"
               >

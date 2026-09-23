@@ -9,13 +9,14 @@ export const skillGroups: SkillGroup[] = [
     title: 'Backend',
     accent: 'text-teal-300',
     skills: [
-      'Java',
+      'Java 8 / 17 / 21',
       'Spring Boot',
       'Spring Cloud',
       'Spring Security',
       'Spring Data',
       'Spring MVC',
       'REST APIs',
+      'HTTP Connection Pooling',
       'Microservices',
       'Hibernate',
       'C# / .NET Core',
@@ -75,7 +76,7 @@ export const skillGroups: SkillGroup[] = [
   {
     title: 'DevOps & Cloud',
     accent: 'text-rose-300',
-    skills: ['Docker', 'Jenkins', 'CI/CD', 'AWS', 'Git', 'GitHub', 'GitLab', 'Bitbucket'],
+    skills: ['Linux / Unix', 'Docker', 'Jenkins', 'CI/CD', 'AWS', 'Git', 'GitHub', 'GitLab', 'Bitbucket'],
   },
   {
     title: 'Databases',
@@ -90,7 +91,7 @@ export const skillGroups: SkillGroup[] = [
       'Mockito',
       'Spring Boot Test',
       'Unit & Integration Testing',
-      'TDD',
+      'TDD (Test-Driven Development)',
       'Agile / Scrum',
       'Code Review',
     ],

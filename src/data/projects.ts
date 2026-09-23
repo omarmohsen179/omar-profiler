@@ -42,6 +42,8 @@ export const projects: Project[] = [
       'Law-office portal where clients track case status and session data while lawyers manage client records through an admin dashboard.',
     metric: 'Workflow +30%',
     tags: ['Spring Boot', 'React.js', 'Legal-tech'],
+    link: 'https://khalidelewa.com',
+    linkLabel: 'live site',
   },
   {
     title: 'Riyadhpack Factory Website',
@@ -49,6 +51,15 @@ export const projects: Project[] = [
       'Product showcase for a Saudi packaging factory with specifications, interactive 3D models, an admin panel, and a contact form.',
     metric: 'Inquiries +20%',
     tags: ['Web', '3D Models', 'Admin Panel'],
+    link: 'https://riyadhpack.com/#/home',
+    linkLabel: 'live site',
+  },
+  {
+    title: 'Internal Accounting & ERP Platforms',
+    description:
+      'Accounting, invoicing, and stock modules on Spring Boot with React reporting front-ends, delivered for multiple SME clients.',
+    metric: 'Multiple SME clients',
+    tags: ['Spring Boot', 'React.js', 'ERP', 'Reporting'],
   },
   {
     title: 'Ostora Production Management',
