@@ -52,7 +52,7 @@ export const experiences: Experience[] = [
   },
   {
     company: 'XSonardive',
-    role: 'Senior Backend Developer',
+    role: 'Senior Backend Developer (Contract)',
     location: 'Berlin, Germany · Remote',
     period: 'Sep 2023 — Dec 2023',
     highlights: [

@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 
 /**
- * Count from 0 up to `target` once the returned ref scrolls into view.
- * Uses requestAnimationFrame with an ease-out curve.
+ * Render `target` immediately (so prerendered HTML, link previews and no-JS
+ * visitors see the real number), then replay a 0 → target count-up once the
+ * returned ref scrolls into view. Uses requestAnimationFrame with an ease-out curve.
  */
 export function useCountUp(target: number, durationMs = 1400) {
   const ref = useRef<HTMLSpanElement | null>(null)
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState(target)
   const started = useRef(false)
 
   useEffect(() => {
@@ -14,10 +15,7 @@ export function useCountUp(target: number, durationMs = 1400) {
     if (!node) return
 
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReduced) {
-      setValue(target)
-      return
-    }
+    if (prefersReduced) return
 
     const observer = new IntersectionObserver(
       (entries) => {

@@ -7,3 +7,4 @@ dist.zip
 
 # Contains the mailbox password — keep it out of version control.
 public/contact.php
+dist-ssr

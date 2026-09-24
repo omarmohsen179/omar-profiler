@@ -15,10 +15,9 @@ export function Contact() {
           {/* Left: pitch + working contact form */}
           <AnimatedOnScroll from="left">
             <p className="text-lg leading-relaxed text-slate-300">
-              I'm actively seeking{' '}
-              <span className="text-accent">relocation across the EU and Asia</span>, and I'm also
-              open to remote roles and freelance projects. I'm available at short notice with no
-              notice period. Whether you need a backend engineer for scalable microservices or a
+              I'm open to senior roles (
+              <span className="text-accent">EU relocation or remote</span>) and selected freelance
+              projects. Whether you need a backend engineer for scalable microservices or a
               full-stack developer to ship product, drop me a message below.
             </p>
             <div className="mt-8">
