@@ -1,5 +1,5 @@
 import type { IconType } from 'react-icons'
-import { FiMail, FiLinkedin, FiGithub } from 'react-icons/fi'
+import { FiMail, FiPhone, FiLinkedin, FiGithub } from 'react-icons/fi'
 import { FaMedium } from 'react-icons/fa'
 
 /**
@@ -25,6 +25,12 @@ export const contactLinks: ContactLink[] = [
     value: 'contact@omarmohsen.dev',
     href: 'mailto:contact@omarmohsen.dev',
     icon: FiMail,
+  },
+  {
+    label: 'Phone',
+    value: '+20 109 598 6507',
+    href: 'tel:+201095986507',
+    icon: FiPhone,
   },
   {
     label: 'LinkedIn',
