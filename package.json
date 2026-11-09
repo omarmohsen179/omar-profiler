@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.js",
     "preview": "vite preview",
-    "serve:php": "npm run build && php -S localhost:8000 -t dist"
+    "serve:php": "npm run build && php -S localhost:8000 -t dist",
+    "cf:login": "wrangler logout && wrangler login",
+    "cf:whoami": "wrangler whoami",
+    "cf:deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "framer-motion": "^11.11.17",
@@ -23,6 +26,7 @@
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2",
-    "vite": "^6.0.3"
+    "vite": "^6.0.3",
+    "wrangler": "^4.158.0"
   }
 }

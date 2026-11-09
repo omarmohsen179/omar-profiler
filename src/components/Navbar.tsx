@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FiMenu, FiX, FiDownload } from 'react-icons/fi'
+import { FiMenu, FiX, FiDownload, FiArrowUpRight } from 'react-icons/fi'
 import { profile } from '../data/profile'
 
 const links = [
@@ -72,6 +72,14 @@ export function Navbar() {
             </a>
           ))}
           <a
+            href={profile.newsletterUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm text-slate-300 transition-colors hover:text-white"
+          >
+            Newsletter <FiArrowUpRight className="text-accent/70" />
+          </a>
+          <a
             href={profile.cvUrl}
             download={profile.cvFileName}
             className="ml-2 inline-flex items-center gap-2 rounded-lg border border-accent/50 px-4 py-2 text-sm font-medium text-accent transition-all hover:bg-accent/10 hover:shadow-glow"
@@ -110,6 +118,15 @@ export function Navbar() {
                   {link.label}
                 </a>
               ))}
+              <a
+                href={profile.newsletterUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className="inline-flex items-center gap-1 rounded-md px-3 py-3 text-slate-200 hover:bg-white/5 hover:text-accent"
+              >
+                Newsletter <FiArrowUpRight />
+              </a>
               <a
                 href={profile.cvUrl}
                 download={profile.cvFileName}

@@ -18,6 +18,10 @@ export const profile = {
   cvFileName: 'Omar-Mohsen-CV.pdf',
   avatar: '/omar-mohsen.jpg',
   avatarWebp: '/omar-mohsen.webp',
+  newsletterUrl: 'https://newsletter.omarmohsen.dev',
+  // beehiiv → Subscribe forms → embed iframe src (https://embeds.beehiiv.com/...).
+  // Leave empty to show a plain subscribe button instead of the form.
+  newsletterEmbedUrl: '',
 } as const
 
 export const stats = [

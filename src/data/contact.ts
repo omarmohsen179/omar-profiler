@@ -3,14 +3,13 @@ import { FiMail, FiPhone, FiLinkedin, FiGithub } from 'react-icons/fi'
 import { FaMedium } from 'react-icons/fa'
 
 /**
- * Contact-form endpoint — a self-hosted PHP script that runs on your cPanel host and
- * emails you form submissions (no third-party service). The file lives at
- * `public/contact.php` and is served from the site root once deployed.
+ * Contact-form endpoint — handled by the Cloudflare Worker in `worker/index.js`, which
+ * emails submissions through the contact@omarmohsen.dev mailbox (SMTP). The mailbox
+ * password is a Cloudflare secret (SMTP_PASS), never shipped to the browser.
  *
- * Locally (npm run dev / preview) there's no PHP runtime, so the form will report a
- * network error — that's expected. It works once uploaded to cPanel.
+ * Locally, `npx wrangler dev` runs the Worker; plain `npm run dev` has no backend.
  */
-export const CONTACT_ENDPOINT = '/contact.php'
+export const CONTACT_ENDPOINT = '/api/contact'
 
 export type ContactLink = {
   label: string
