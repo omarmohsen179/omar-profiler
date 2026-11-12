@@ -1,5 +1,4 @@
-import { motion } from 'framer-motion'
-import type { ReactNode } from 'react'
+import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react'
 
 type Props = {
   children: ReactNode
@@ -10,37 +9,52 @@ type Props = {
   as?: 'div' | 'li' | 'section'
 }
 
-const offset = {
-  up: { y: 28, x: 0 },
-  down: { y: -28, x: 0 },
-  left: { x: 36, y: 0 },
-  right: { x: -36, y: 0 },
-  none: { x: 0, y: 0 },
-}
-
 /**
  * Fade + slide a block into view the first time it scrolls onscreen.
- * Motion is automatically neutralised for users with prefers-reduced-motion
- * because Framer Motion respects the OS setting via useReducedMotion internally
- * when transforms are used, and the CSS media query above zeroes durations.
+ *
+ * Content is rendered VISIBLE in the prerendered HTML, so the page paints
+ * instantly without waiting for JavaScript. After hydration, only blocks that
+ * are still below the fold get hidden (via a data attribute) and are revealed
+ * with a CSS transition when they scroll in. No animation library needed.
  */
 export function AnimatedOnScroll({
   children,
   className,
   delay = 0,
   from = 'up',
-  as = 'div',
+  as: Tag = 'div',
 }: Props) {
-  const MotionTag = motion[as]
+  const ref = useRef<HTMLElement | null>(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    // Already on screen (or scrolled past) — leave it visible.
+    if (el.getBoundingClientRect().top < window.innerHeight) return
+
+    el.setAttribute('data-reveal-hidden', '')
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.removeAttribute('data-reveal-hidden')
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '0px 0px -80px 0px' },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <MotionTag
+    <Tag
+      ref={ref as never}
       className={className}
-      initial={{ opacity: 0, ...offset[from] }}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+      data-reveal={from}
+      style={delay ? ({ '--reveal-delay': `${delay}s` } as CSSProperties) : undefined}
     >
       {children}
-    </MotionTag>
+    </Tag>
   )
 }

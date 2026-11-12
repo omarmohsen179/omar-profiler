@@ -24,7 +24,13 @@
     background-image:
       radial-gradient(60rem 60rem at 80% -10%, rgba(45, 212, 191, 0.08), transparent 60%),
       radial-gradient(50rem 50rem at 0% 20%, rgba(129, 140, 248, 0.07), transparent 55%);
-    background-attachment: fixed;
+  }
+
+  /* Fixed backgrounds force a full repaint on every scroll frame on phones. */
+  @media (min-width: 768px) {
+    body {
+      background-attachment: fixed;
+    }
   }
 
   ::selection {
@@ -58,7 +64,7 @@
 
   /* Glassy card surface used across sections */
   .card {
-    @apply rounded-2xl border border-white/5 bg-ink-850/60 backdrop-blur-sm;
+    @apply rounded-2xl border border-white/5 bg-ink-850/70 md:bg-ink-850/60 md:backdrop-blur-sm;
   }
 
   .accent-gradient-text {
@@ -69,6 +75,22 @@
     @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-slate-300;
   }
 }
+
+/* Scroll reveal (see AnimatedOnScroll). Visible by default; JS hides below-fold blocks. */
+[data-reveal] {
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0s);
+}
+[data-reveal][data-reveal-hidden] {
+  opacity: 0;
+  transition-duration: 0s;
+}
+[data-reveal='up'][data-reveal-hidden] { transform: translateY(28px); }
+[data-reveal='down'][data-reveal-hidden] { transform: translateY(-28px); }
+[data-reveal='left'][data-reveal-hidden] { transform: translateX(36px); }
+[data-reveal='right'][data-reveal-hidden] { transform: translateX(-36px); }
 
 /* Honour users who prefer less motion */
 @media (prefers-reduced-motion: reduce) {

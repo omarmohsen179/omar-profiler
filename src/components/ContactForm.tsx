@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { FiSend, FiCheckCircle, FiAlertCircle, FiLoader } from 'react-icons/fi'
 import { CONTACT_ENDPOINT } from '../data/contact'
 
@@ -102,7 +101,6 @@ export function ContactForm() {
         )}
       </button>
 
-      <AnimatePresence>
         {status === 'success' && (
           <Notice tone="success" icon={<FiCheckCircle />}>
             Thanks — your message is on its way. I&rsquo;ll get back to you shortly.
@@ -113,7 +111,6 @@ export function ContactForm() {
             {error}
           </Notice>
         )}
-      </AnimatePresence>
     </form>
   )
 }
@@ -140,11 +137,8 @@ function Notice({
   children: React.ReactNode
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
-      className={`flex items-start gap-2 rounded-lg border px-4 py-3 text-sm ${
+    <div
+      className={`animate-fade-up flex items-start gap-2 rounded-lg border px-4 py-3 text-sm ${
         tone === 'success'
           ? 'border-accent/30 bg-accent/10 text-accent-soft'
           : 'border-rose-500/30 bg-rose-500/10 text-rose-300'
@@ -152,6 +146,6 @@ function Notice({
     >
       <span className="mt-0.5 shrink-0">{icon}</span>
       <span>{children}</span>
-    </motion.div>
+    </div>
   )
 }

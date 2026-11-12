@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import { FiFolder, FiTrendingUp, FiExternalLink, FiSmartphone } from 'react-icons/fi'
 import { projects } from '../data/projects'
 import { SectionHeading } from './ui/SectionHeading'
@@ -12,7 +11,7 @@ export function Projects() {
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, i) => {
-            const Wrapper = project.link ? motion.a : motion.article
+            const Wrapper = project.link ? 'a' : 'article'
             const linkProps = project.link
               ? {
                   href: project.link,
@@ -26,9 +25,7 @@ export function Projects() {
               <AnimatedOnScroll key={project.title} delay={i * 0.05}>
                 <Wrapper
                   {...linkProps}
-                  whileHover={{ y: -6 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className={`card group flex h-full flex-col p-6 transition-colors hover:border-accent/40 hover:shadow-glow ${
+                  className={`card group flex h-full flex-col p-6 transition duration-300 hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-glow ${
                     project.featured ? 'border-accent/25 bg-accent/[0.03]' : ''
                   }`}
                 >

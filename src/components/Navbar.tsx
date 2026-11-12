@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { FiMenu, FiX, FiDownload, FiArrowUpRight } from 'react-icons/fi'
 import { profile } from '../data/profile'
 
@@ -42,10 +41,7 @@ export function Navbar() {
   }, [])
 
   return (
-    <motion.header
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
+    <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
         scrolled ? 'border-b border-white/5 bg-ink-950/80 backdrop-blur-lg' : ''
       }`}
@@ -98,14 +94,9 @@ export function Navbar() {
         </button>
       </nav>
 
-      <AnimatePresence>
         {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="overflow-hidden border-t border-white/5 bg-ink-950/95 backdrop-blur-lg md:hidden"
+          <div
+            className="animate-slide-down overflow-hidden border-t border-white/5 bg-ink-950/95 backdrop-blur-lg md:hidden"
           >
             <div className="container-page flex flex-col gap-1 py-4">
               {links.map((link) => (
@@ -136,9 +127,8 @@ export function Navbar() {
                 <FiDownload /> Download Resume
               </a>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
-    </motion.header>
+    </header>
   )
 }

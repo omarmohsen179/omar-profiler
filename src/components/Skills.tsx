@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import { skillGroups } from '../data/skills'
 import { SectionHeading } from './ui/SectionHeading'
 import { AnimatedOnScroll } from './ui/AnimatedOnScroll'
@@ -18,18 +17,13 @@ export function Skills() {
                   <h3 className="font-semibold text-white">{group.title}</h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {group.skills.map((skill, si) => (
-                    <motion.span
+                  {group.skills.map((skill) => (
+                    <span
                       key={skill}
-                      initial={{ opacity: 0, scale: 0.85 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.3, delay: si * 0.03 }}
-                      whileHover={{ y: -2 }}
-                      className="chip cursor-default hover:border-accent/50 hover:text-accent"
+                      className="chip cursor-default transition-transform hover:-translate-y-0.5 hover:border-accent/50 hover:text-accent"
                     >
                       {skill}
-                    </motion.span>
+                    </span>
                   ))}
                 </div>
               </div>
